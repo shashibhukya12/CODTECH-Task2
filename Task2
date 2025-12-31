@@ -1,0 +1,33 @@
+/* */
+
+
+------------------------------------------------
+-- TASK 2: WINDOW FUNCTIONS / SUBQUERY / CTE
+------------------------------------------------
+
+-- WINDOW FUNCTION: Salary Ranking
+SELECT emp_id, emp_name, salary,
+DENSE_RANK() OVER (ORDER BY salary DESC) AS salary_rank
+FROM employees;
+
+-- WINDOW: Average salary per department
+SELECT emp_name, dept_id, salary,
+AVG(salary) OVER (PARTITION BY dept_id) AS dept_avg_salary
+FROM employees;
+
+
+------------------------------------------------
+-- SUBQUERY: Employees earning above average salary
+------------------------------------------------
+SELECT emp_name, salary
+FROM employees
+WHERE salary > (SELECT AVG(salary) FROM employees);
+
+
+------------------------------------------------
+-- CTE Example: Employees with salary greater than 50000
+------------------------------------------------
+WITH HighSalary AS (
+    SELECT emp_name, salary FROM employees WHERE salary > 50000
+)
+SELECT * FROM HighSalary;
